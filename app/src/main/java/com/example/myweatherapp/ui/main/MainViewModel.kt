@@ -1,4 +1,4 @@
-package com.example.myweatherapp.ui.viewmodel
+package com.example.myweatherapp.ui.main
 
 import android.app.Application
 import android.util.Log
@@ -24,6 +24,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _weatherRepository: WeatherRepository
     var mWeather: LiveData<Weather>
+    var mCity: LiveData<Weather>
     var isViewLoading = MutableLiveData<Boolean>()
     var anErrorOccurred = MutableLiveData<Boolean>()
 
@@ -31,9 +32,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val weatherDB = WeatherAppDatabase.getInstance(application)
         _weatherRepository = WeatherRepository.create(weatherDB.getWeatherDAO())
         mWeather = _weatherRepository.getWeather()
+        mCity = _weatherRepository.getCityRecent()
     }
 
-    fun getWeather(lat: Double, lng: Double) {
+    fun getWeather(lat: Double, lng: Double, cityName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             isViewLoading.postValue(true)
             val params: HashMap<String?, String?> = HashMap()
@@ -60,6 +62,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             response?.let {
                 isViewLoading.postValue(false)
                 anErrorOccurred.postValue(false)
+                it.cityName = cityName
                 insertWeather(it)
             } ?: isViewLoading.postValue(true)
         }

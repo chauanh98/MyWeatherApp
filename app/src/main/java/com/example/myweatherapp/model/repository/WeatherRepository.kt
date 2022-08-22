@@ -8,6 +8,8 @@ class WeatherRepository private constructor(private val _weatherDAO: WeatherDAO)
 
     fun getWeather(): LiveData<Weather> = _weatherDAO.getWeather()
 
+    fun getCityRecent(): LiveData<Weather> = _weatherDAO.getCityRecent()
+
     suspend fun insertWeather(weather: Weather) {
         _weatherDAO.insertWeather(weather)
     }

@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName
 data class Weather(
     @PrimaryKey
     val idWeather: Long = 1,
+    var cityName: String,
     @SerializedName("weather")
-    val weather: List<Main>
+    val weather: List<Main>?
 )
