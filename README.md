@@ -4,3 +4,4 @@ This weather app not use third party libraries and using:
 - Coroutine
 - Room
 - Live Data
+- UnitTest
