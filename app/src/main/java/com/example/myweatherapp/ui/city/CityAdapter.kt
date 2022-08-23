@@ -22,14 +22,6 @@ class CityAdapter : RecyclerView.Adapter<CityAdapter.Holder>() {
         notifyDataSetChanged()
     }
 
-    internal fun setFilterList(list: List<Weather>) {
-        if (this.list.isNotEmpty()) {
-            this.list.clear()
-        }
-        this.list.addAll(list)
-        notifyDataSetChanged()
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflater = LayoutInflater.from(parent.context)
         val binding =

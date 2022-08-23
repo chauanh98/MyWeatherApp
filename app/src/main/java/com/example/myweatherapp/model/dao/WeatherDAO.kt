@@ -9,12 +9,12 @@ import com.example.myweatherapp.model.domain.Weather
 
 @Dao
 interface WeatherDAO {
-    @Query("SELECT * FROM weather")
+    @Query("SELECT * FROM weather ORDER BY idWeather DESC LIMIT 1")
     fun getWeather(): LiveData<Weather>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeather(weather: Weather)
 
     @Query("SELECT * FROM weather ORDER BY idWeather DESC LIMIT 10")
-    fun getCityRecent(): LiveData<Weather>
+    fun getCityRecent(): LiveData<List<Weather>>
 }

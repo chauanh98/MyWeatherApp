@@ -2,10 +2,7 @@ package com.example.myweatherapp.ui.main
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.myweatherapp.data.db.WeatherAppDatabase
 import com.example.myweatherapp.model.domain.Weather
 import com.example.myweatherapp.model.repository.WeatherRepository
@@ -24,7 +21,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _weatherRepository: WeatherRepository
     var mWeather: LiveData<Weather>
-    var mCity: LiveData<Weather>
+    var mCity: LiveData<List<Weather>>
     var isViewLoading = MutableLiveData<Boolean>()
     var anErrorOccurred = MutableLiveData<Boolean>()
 
@@ -57,8 +54,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val response =
                 Gson().fromJson(weatherObject.toString(), Weather::class.java)
 
-            Log.i("chau", response.toString())
-
             response?.let {
                 isViewLoading.postValue(false)
                 anErrorOccurred.postValue(false)
@@ -72,6 +67,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             _weatherRepository.insertWeather(weather)
             mWeather = _weatherRepository.getWeather()
+            mCity = _weatherRepository.getCityRecent()
         }
     }
 

@@ -35,8 +35,8 @@ class CityFragment : DialogFragment() {
     }
 
     private fun setObserversUI() {
-        mViewModel.mWeather!!.observe(this) { weather ->
-            weather.let { data ->
+        mViewModel.mWeather.observe(this) { data ->
+            if (data != null) {
                 data.weather?.get(0)?.hourly?.let {
                     for (hourly in it.reversed()) {
                         val formatter = SimpleDateFormat("HHmm")

@@ -4,7 +4,7 @@ import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
-import android.widget.SearchView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -79,59 +79,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setListenerUI() {
-        cityList.add(Weather(1, "Seoul", null))
-        cityList.add(Weather(2, "Paris", null))
-        cityList.add(Weather(3, "Moscow", null))
-        cityList.add(Weather(4, "Tokyo", null))
-        cityList.add(Weather(5, "London", null))
-        cityList.add(Weather(6, "New York", null))
-
-//        mViewModel.mCity.observe(this) {
-//            cityList.add(it)
-//        }
-
-        mBinding.recyclerView.setHasFixedSize(true)
-        mBinding.recyclerView.layoutManager = LinearLayoutManager(this)
-        cityAdapter = CityAdapter()
-        cityAdapter.setCitiesList(cityList)
-
-        mBinding.recyclerView.addItemDecoration(
-            DividerItemDecoration(this, RecyclerView.VERTICAL)
-        )
-        mBinding.adapter = cityAdapter
-        cityAdapter.onItemClick = {
-            mAddress = getLocationFromAddress(this, it.cityName)
-            setupLatLngCallBack(mAddress, it.cityName)
-            val cityFragment = CityFragment()
-            cityFragment.show(supportFragmentManager, "CityFragment")
-        }
-
-        mBinding.searchCity.run {
-            this.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-                androidx.appcompat.widget.SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    this@run.clearFocus()
-                    return false
+        mBinding.run {
+            recyclerView.setHasFixedSize(true)
+            recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+            cityAdapter = CityAdapter()
+            mViewModel.mCity.observe(this@MainActivity) {
+                if (it.isNotEmpty()) {
+                    cityList.clear()
                 }
-
-                override fun onQueryTextChange(query: String?): Boolean {
-                    filterCity(query!!)
-                    return false
-                }
-            })
-        }
-    }
-
-    private fun filterCity(query: String) {
-        val filterCity = ArrayList<Weather>()
-        for (item in cityList) {
-            if (item.cityName.lowercase().contains(query.lowercase())) {
-                filterCity.add(item)
+                cityList.addAll(it)
+                cityAdapter.setCitiesList(cityList)
             }
-        }
+            recyclerView.addItemDecoration(
+                DividerItemDecoration(this@MainActivity, RecyclerView.VERTICAL)
+            )
+            adapter = cityAdapter
 
-        filterCity.let {
-            cityAdapter.setFilterList(it)
+            val cities = resources.getStringArray(R.array.cities)
+            val adapter =
+                ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, cities)
+            autoComplete.setAdapter(adapter)
+            autoComplete.threshold = 1
+            autoComplete.setOnItemClickListener { adapterView, _, i, _ ->
+                mAddress = getLocationFromAddress(
+                    this@MainActivity,
+                    adapterView.getItemAtPosition(i).toString()
+                )
+                setupLatLngCallBack(mAddress, adapterView.getItemAtPosition(i).toString())
+                val cityFragment = CityFragment()
+                cityFragment.show(supportFragmentManager, "CityFragment")
+            }
         }
     }
 

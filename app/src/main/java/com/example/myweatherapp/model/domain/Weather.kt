@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 data class Weather(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val idWeather: Long = 1,
     var cityName: String,
     @SerializedName("weather")
