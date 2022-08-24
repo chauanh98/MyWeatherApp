@@ -9,7 +9,6 @@
         <variable
             name="weather"
             type="com.example.myweatherapp.model.domain.Weather" />
-
     </data>
 
     <LinearLayout

@@ -87,7 +87,6 @@
                 android:textStyle="bold"
                 tools:text="@{String.valueOf(hourly.mid[0].weatherDesc[0].cdata)}" />
 
-
         </LinearLayout>
 
         <LinearLayout
