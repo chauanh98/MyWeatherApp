@@ -93,15 +93,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             writer.flush()
             writer.close()
             os.close()
-            val responseCode = conn.responseCode
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                var line: String?
-                val br = BufferedReader(InputStreamReader(conn.inputStream))
-                while (br.readLine().also { line = it } != null) {
-                    response += line
+            when (conn.responseCode) {
+                HttpURLConnection.HTTP_OK -> {
+                    var line: String?
+                    val br = BufferedReader(InputStreamReader(conn.inputStream))
+                    while (br.readLine().also { line = it } != null) {
+                        response += line
+                    }
                 }
-            } else {
-                response = ""
+                HttpURLConnection.HTTP_PAYMENT_REQUIRED ->
+                    Log.e(this.javaClass.name, "API Call Limit")
+                HttpURLConnection.HTTP_UNAVAILABLE -> Log.e(
+                    this.javaClass.name,
+                    "Service Unavailable"
+                )
+                else -> response = ""
             }
         } catch (e: Exception) {
             Log.e(this.javaClass.name, e.message.toString())
