@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.myweatherapp.model.dao.WeatherDAO
 import com.example.myweatherapp.model.domain.Weather
 
-class WeatherRepository private constructor(private val _weatherDAO: WeatherDAO) {
+class WeatherRepository(private val _weatherDAO: WeatherDAO) {
 
     fun getWeather(): LiveData<Weather> = _weatherDAO.getWeather()
 

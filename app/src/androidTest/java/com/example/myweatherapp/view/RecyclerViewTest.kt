@@ -1,4 +1,4 @@
-package com.example.myweatherapp
+package com.example.myweatherapp.view
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
@@ -10,6 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import com.example.myweatherapp.R
 import com.example.myweatherapp.ui.main.MainActivity
 import org.junit.Rule
 import org.junit.Test
@@ -38,9 +39,6 @@ class RecyclerViewTest {
             )
     }
 
-    /**
-     * To run this test case, run app and choose Paris and run this test again
-     */
     @Test
     fun scrollToItemBelowFold_checkItsText() {
         // First scroll to the position that needs to be matched and click on it.
@@ -53,7 +51,7 @@ class RecyclerViewTest {
             )
 
         // Match the text in an item below the fold and check that it's displayed.
-        val itemElementText = "Paris"
+        val itemElementText = "Moscow"
         Espresso.onView(ViewMatchers.withText(itemElementText))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }

@@ -46,7 +46,6 @@ class CityAdapter : RecyclerView.Adapter<CityAdapter.Holder>() {
             weather?.let {
                 textViewCityName.text = it.cityName
             }
-
         }
     }
 }

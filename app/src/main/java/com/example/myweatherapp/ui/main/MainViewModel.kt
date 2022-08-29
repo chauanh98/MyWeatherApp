@@ -15,7 +15,6 @@ import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
-import javax.net.ssl.HttpsURLConnection
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -63,7 +62,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun insertWeather(weather: Weather) {
+    fun insertWeather(weather: Weather) {
         viewModelScope.launch {
             _weatherRepository.insertWeather(weather)
             mWeather = _weatherRepository.getWeather()

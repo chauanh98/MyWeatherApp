@@ -25,7 +25,7 @@ abstract class WeatherAppDatabase : RoomDatabase() {
                     context.applicationContext,
                     WeatherAppDatabase::class.java,
                     "MyWeatherApp"
-                ).build()
+                ).allowMainThreadQueries().build()
                 INSTANCE = db
                 db
             }
