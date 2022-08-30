@@ -12,7 +12,7 @@ you should:
 2 run app again
 3 search "Moscow" to see result
 4 run unit test
-     
-![alt text](https://user-images.githubusercontent.com/63135090/187330561-fa4e1899-f8ba-4c7c-983b-41ab4df5a916.png)
 
-![alt text](https://user-images.githubusercontent.com/63135090/187330712-a28c6296-83ae-47ea-bb0f-e1f7a9732d1a.png)
+![Screenshot_20220830_090142](https://user-images.githubusercontent.com/63135090/187331887-f8264627-15c5-43b8-89a0-aeafb48f6b74.png)
+![Screenshot_20220830_090245](https://user-images.githubusercontent.com/63135090/187331980-431631cd-9740-444d-979f-e6e0a4648de8.png)
+
