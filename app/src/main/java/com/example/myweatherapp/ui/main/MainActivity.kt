@@ -74,7 +74,8 @@ class MainActivity : AppCompatActivity() {
             else mAlertDialogLoading.dismiss()
         }
         mViewModel.anErrorOccurred.observe(this) {
-            if (it) mAlertDialogError.show() else mAlertDialogError.dismiss()
+            if (it) mAlertDialogError.show()
+            else mAlertDialogError.dismiss()
         }
     }
 
