@@ -69,11 +69,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setObserversLoadingUI() {
-        mViewModel.isViewLoading.observe(this) {
+        mViewModel.shouldLoading.observe(this) {
             if (it) mAlertDialogLoading.show()
             else mAlertDialogLoading.dismiss()
         }
-        mViewModel.anErrorOccurred.observe(this) {
+        mViewModel.shouldError.observe(this) {
             if (it) mAlertDialogError.show()
             else mAlertDialogError.dismiss()
         }

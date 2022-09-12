@@ -19,10 +19,12 @@ import java.net.URLEncoder
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _weatherRepository: WeatherRepository
-    var mWeather: LiveData<Weather>
-    var mCity: LiveData<List<Weather>>
-    var isViewLoading = MutableLiveData<Boolean>()
-    var anErrorOccurred = MutableLiveData<Boolean>()
+    private val _mWeather = MutableLiveData<Weather>()
+    var mWeather: LiveData<Weather> = _mWeather
+    private val _mCity = MutableLiveData<List<Weather>>()
+    var mCity: LiveData<List<Weather>> = _mCity
+    var shouldLoading = MutableLiveData<Boolean>()
+    var shouldError = MutableLiveData<Boolean>()
 
     init {
         val weatherDB = WeatherAppDatabase.getInstance(application)
@@ -33,7 +35,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getWeather(lat: Double, lng: Double, cityName: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            isViewLoading.postValue(true)
+            shouldLoading.postValue(true)
             val params: HashMap<String?, String?> = HashMap()
             params["key"] = Constants.API.API_KEY
             params["q"] = "$lat,$lng"
@@ -54,11 +56,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 Gson().fromJson(weatherObject.toString(), Weather::class.java)
 
             response?.let {
-                isViewLoading.postValue(false)
-                anErrorOccurred.postValue(false)
+                shouldLoading.postValue(false)
+                shouldError.postValue(false)
                 it.cityName = cityName
                 insertWeather(it)
-            } ?: isViewLoading.postValue(true)
+            } ?: shouldLoading.postValue(true)
         }
     }
 

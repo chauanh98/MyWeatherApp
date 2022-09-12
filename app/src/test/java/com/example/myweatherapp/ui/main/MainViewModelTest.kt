@@ -1,29 +1,25 @@
-package com.example.myweatherapp
+package com.example.myweatherapp.ui.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.example.myweatherapp.getOrAwaitValue
 import com.example.myweatherapp.model.domain.*
-import com.example.myweatherapp.ui.main.MainViewModel
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
 import org.mockito.Mockito
-import org.robolectric.RobolectricTestRunner
+import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(RobolectricTestRunner::class)
-class MainViewModelUnitTest {
+@RunWith(MockitoJUnitRunner::class)
+class MainViewModelTest {
 
+    @Mock
     private lateinit var viewModel: MainViewModel
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @Before
-    fun setUp() {
-        viewModel = Mockito.mock(MainViewModel::class.java)
-    }
 
     @Test
     fun getWeather() {
@@ -45,12 +41,29 @@ class MainViewModelUnitTest {
             )
         )
         val weathers = MutableLiveData<Weather>()
+        val isViewLoading = MutableLiveData<Boolean>()
+        val anErrorOccurred = MutableLiveData<Boolean>()
+
         weathers.value = weather
+        isViewLoading.value = false
+        anErrorOccurred.value = false
+
         Mockito.`when`(viewModel.mWeather).thenReturn(weathers)
+        Mockito.`when`(viewModel.shouldLoading).thenReturn(isViewLoading)
+        Mockito.`when`(viewModel.shouldError).thenReturn(anErrorOccurred)
+
         val getWeather = viewModel.mWeather.getOrAwaitValue()
+        val getLoading = viewModel.shouldLoading.getOrAwaitValue()
+        val getError = viewModel.shouldError.getOrAwaitValue()
+
         Assert.assertNotNull(getWeather)
         Assert.assertEquals(weather, getWeather)
+        Assert.assertEquals(false, getLoading)
+        Assert.assertEquals(false, getError)
+
         Mockito.verify(viewModel).mWeather
+        Mockito.verify(viewModel).shouldLoading
+        Mockito.verify(viewModel).shouldError
     }
 
     @Test
